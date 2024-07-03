@@ -17,5 +17,11 @@ rm -rf venv
 curl 127.0.0.1:5153/api/reports/daily_usage
 curl 127.0.0.1:5153/api/reports/user_visits
 
-docker build -t test-coworking-analytics .
+docker build -t coworking .
 docker run --network="host" test-coworking-analytics
+
+
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 536577976564.dkr.ecr.us-east-1.amazonaws.com
+docker build -t coworking .
+docker tag coworking:latest 536577976564.dkr.ecr.us-east-1.amazonaws.com/coworking:latest
+docker push 536577976564.dkr.ecr.us-east-1.amazonaws.com/coworking:latest
