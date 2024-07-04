@@ -43,3 +43,21 @@ aws iam attach-role-policy \
 --policy-arn arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy
 
 aws eks create-addon --addon-name amazon-cloudwatch-observability --cluster-name coworking-cluster
+
+curl aabe0102f83134eb0bbf035a56ed2a2f-1463734127.us-east-1.elb.amazonaws.com:5153/api/reports/daily_usage
+
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm install postgresql-service bitnami/postgresql --set primary.persistence.enabled=false
+
+kubectl get secret --namespace default postgresql-service -o jsonpath="{.data.postgresql-password}" | base64 --decode
+
+psql --host 127.0.0.1 -U coworking -d coworking -p 5433
+
+psql --host 127.0.0.1 -U postgres -d postgres -p 5432
+ehQmy6xZQh
+
+PGPASSWORD="$DB_PASSWORD" psql --host 127.0.0.1 -U coworking -d coworking -p 5433 -c "CREATE USER coworking WITH LOGIN;"
+PGPASSWORD="$DB_PASSWORD" psql --host 127.0.0.1 -U coworking -d coworking -p 5433 -c "ALTER ROLE coworking WITH PASSWORD 'coworking!';"
+PGPASSWORD="$DB_PASSWORD" psql --host 127.0.0.1 -U coworking -d coworking -p 5433 -c "ALTER ROLE coworking WITH SUPERUSER;"
+
+kubectl port-forward --namespace default svc/postgresql-service 5432:5432 &
